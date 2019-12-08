@@ -282,12 +282,10 @@ const intCode = data => {
 const findCombo = data => {
   for (let i = 0; i < 100; i++) {
     for (let j = 0; j < 100; j++) {
-      const meta = [...data];
+      const meta = [...data]; // to create new copy of array on every iteration, or else result will be the same everytime
       meta[1] = i;
       meta[2] = j;
-      // console.log(`${meta[1]}, ${meta[2]}, ${intCode(meta)[0]}`);
       if (intCode(meta)[0] === 19690720) {
-        // console.log("found");
         return `${i}${j}`;
       }
     }
