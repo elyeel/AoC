@@ -1,33 +1,26 @@
-const part4a = () => {
-  const b = 138307;
-  const e = 654504;
-  const mb = 138888;
-  const me = 555555;
+const input = "138307-654504".split("-");
+const inputArr = [];
+const regEx = /([0-9])\1/;
+const regEx2 = /([0-9])\1\1/;
+for (let i = parseInt(input[0]); i <= parseInt(input[1]); i++) {
+	inputArr.push(i);
+}
+const duplArr = inputArr.filter(x => regEx.test(x));
+const noDesc = duplArr.filter(elem => {
+	const chars = elem.toString(10).split("");
+	let test = chars[0];
+	for (let i = 1; i < 6; i++) {
+		if (parseInt(test, 10) <= parseInt(chars[i], 10)) {
+			test = chars[i];
+		} else {
+			return false;
+		}
+	}
+	return true;
+});
 
-  let nofMatches = 0;
+const noTriple = noDesc.filter(elem => !regEx2.test(elem));
+const part2 = () => {};
 
-  let v = [1, 3, 8, 8, 8, 8];
-  let i = v.length;
-  while (v[0] !== 6 || v[1] !== 6) {
-    do {
-      --i;
-      ++v[i];
-    } while (i > 0 && v[i] > 9);
-    ++i;
-    while (i < v.length) {
-      v[i] = v[i - 1];
-      ++i;
-    }
-
-    for (let p = 1; p < v.length; ++p)
-      if (v[p] === v[p - 1]) {
-        ++nofMatches;
-        break;
-      }
-  }
-
-  // document.writeln(nofMatches);
-  return nofMatches;
-};
-
-console.log(part4a());
+console.log("Part 1 :", noDesc.length);
+console.log("Part 2 :", noTriple.length); // still working on this part2
