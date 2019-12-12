@@ -10,7 +10,13 @@ const plot = input.map(node => {
 
 const plotted = orbital.map(x => {
   let orb = tree[x[0]];
-  orb == undefined ? (tree[x[0]] = x[1]) : orb.push(x[1]);
+  if (orb == undefined) {
+    tree[x[0]] = x[1];
+  } else {
+    tree[x[0]] = [];
+    tree[x[0]].push(x[1]);
+    tree[x[0]].push(orb);
+  }
 });
 
 console.log(orbital.length, orbital, tree);
