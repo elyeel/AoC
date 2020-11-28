@@ -1,9 +1,9 @@
 const fs = require("fs");
-const input = fs.readFileSync("./2015/day03/control.txt", "utf8").split("");
+const input = fs.readFileSync("./2015/day03/data.txt", "utf8").split("");
 console.log(input.length);
 
 const coord = {
-  "0,0": 0,
+  "0,0": 1,
 };
 let x = 0,
   rx = 0,
@@ -72,34 +72,8 @@ input.map((deliver) => {
         break;
     }
   }
-  switch (deliver) {
-    case "^":
-      {
-        y++;
-        printCoord(x, y);
-      }
-      break;
-    case "<":
-      {
-        x--;
-        printCoord(x, y);
-      }
-      break;
-    case ">":
-      {
-        x++;
-        printCoord(x, y);
-      }
-      break;
-    case "v":
-      {
-        y--;
-        printCoord(x, y);
-      }
-      break;
-  }
   robo = !robo;
 });
 
 console.log(Object.entries(coord).length);
-console.log(coord);
+console.log(Object.values(coord).filter((x) => x >= 1).length);
