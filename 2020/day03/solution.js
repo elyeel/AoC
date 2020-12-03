@@ -1,6 +1,6 @@
 const fs = require("fs");
 const input = fs.readFileSync("./2020/day03/data.txt", "utf8").split("\n");
-console.log(input.length);
+// console.log(input.length);
 
 let count = 0,
   count2 = 0;
@@ -20,7 +20,7 @@ const findTree = (input) => {
   return count;
 };
 
-console.log(findTree(input));
+// console.log(findTree(input));
 
 const findTree2 = (input, pos) => {
   let count2 = 0;
@@ -46,7 +46,7 @@ const findTree3 = (input, pos) => {
       position -= 31;
     }
     // console.log(input[i].split("")[position]);
-    input[i].split("")[position] === "#" ? count2++ : count2;
+    input[i].split("")[position] === "#" ? count3++ : count3;
     position += pos;
   }
   return count3;
@@ -57,3 +57,4 @@ console.log(findTree2(input, 3));
 console.log(findTree2(input, 5));
 console.log(findTree2(input, 7));
 console.log(findTree3(input, 1));
+console.log(88 * 145 * 71 * 90 * 42);
