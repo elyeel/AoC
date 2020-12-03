@@ -57,4 +57,10 @@ console.log(findTree2(input, 3));
 console.log(findTree2(input, 5));
 console.log(findTree2(input, 7));
 console.log(findTree3(input, 1));
-console.log(88 * 145 * 71 * 90 * 42);
+console.log(
+  findTree2(input, 1) *
+    findTree2(input, 3) *
+    findTree2(input, 5) *
+    findTree2(input, 7) *
+    findTree3(input, 1)
+);
