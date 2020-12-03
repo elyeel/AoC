@@ -1,66 +1,45 @@
 const fs = require("fs");
 const input = fs.readFileSync("./2020/day03/data.txt", "utf8").split("\n");
-// console.log(input.length);
+console.log(input.length);
 
-let count = 0,
-  count2 = 0;
-let position = 3;
 const slopes = [1, 3, 5, 7, "12"];
 
-const findTree = (input) => {
-  for (let i = 1; i < input.length; i++) {
+const findTree = (input, right, down) => {
+  let count = 0;
+  // console.log(right, down);
+  let position = right;
+  for (let i = down; i < input.length; i += down) {
     // position > 30 ? (position = 0) : position;
     if (position > 30) {
       position -= 31;
     }
     // console.log(input[i].split("")[position]);
-    input[i].split("")[position] === "#" ? count++ : count;
-    position += 3;
+    input[i][position] === "#" ? count++ : count;
+    position += right;
   }
   return count;
 };
 
-// console.log(findTree(input));
-
-const findTree2 = (input, pos) => {
-  let count2 = 0;
-  let position = pos;
-  for (let i = 1; i < input.length; i++) {
-    // position > 30 ? (position = 0) : position;
-    if (position > 30) {
-      position -= 31;
+const findTreeAll = (slopes) => {
+  const result = slopes.map((x) => {
+    // console.log(x);
+    if (x !== "12") {
+      return findTree(input, x, 1);
+    } else {
+      return findTree(input, 1, 2);
     }
-    // console.log(input[i].split("")[position]);
-    input[i].split("")[position] === "#" ? count2++ : count2;
-    position += pos;
-  }
-  return count2;
+    // Number(x) ?  : ;
+  });
+  return result;
 };
 
-const findTree3 = (input, pos) => {
-  let count3 = 0;
-  let position = pos;
-  for (let i = 2; i < input.length; i += 2) {
-    // position > 30 ? (position = 0) : position;
-    if (position > 30) {
-      position -= 31;
-    }
-    // console.log(input[i].split("")[position]);
-    input[i].split("")[position] === "#" ? count3++ : count3;
-    position += pos;
-  }
-  return count3;
-};
 
-console.log(findTree2(input, 1));
-console.log(findTree2(input, 3));
-console.log(findTree2(input, 5));
-console.log(findTree2(input, 7));
-console.log(findTree3(input, 1));
+let multiply = 1;
 console.log(
-  findTree2(input, 1) *
-    findTree2(input, 3) *
-    findTree2(input, 5) *
-    findTree2(input, 7) *
-    findTree3(input, 1)
+  "Part1 = ",
+  findTreeAll([3]),
+  "Part2 = ",
+  findTreeAll(slopes).map((x) => {
+    return multiply *= x;
+  })
 );
