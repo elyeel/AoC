@@ -27,20 +27,8 @@ const parseInstruction = (instruction) => {
   };
 };
 
-const filteredInput = input.filter((line) => {
-  const instruct = parseInstruction(line);
-  // console.log(instruct);
-
-  if (!instruct.command) return line;
-});
-
-const filteredInput2 = input.filter((line) => {
-  const instruct = parseInstruction(line);
-  if (["a", "b", "c"].some((x) => x === instruct.args.map((y) => y))) return line;
-});
-
 const calculateOp = (instruct) => {
-  // base case for recursive
+  // base case for recursive, this function is useless
   // if ()
 
   if (instruct.command) {
@@ -66,18 +54,46 @@ const calculateOp = (instruct) => {
   }
 };
 
-const test = (data) => {
-  data.map((line, i) => {
-    const instruct = parseInstruction(line);
-    if (result[instruct.destination]) {
-      // destination exist in result go here
-    } else {
-      // destination not exist in result here, create key: value
-      //creating new key to result
-      calculateOp(instruct);
-    }
-  });
+const calculateWire = (wireName) => {
+  const wireNameObj = result[wireName];
+  // console.log(wireName, wireNameObj);
+
+  if (typeof wireName === "number") {
+    console.log("first ", wireName, typeof wireName);
+    return wireName;
+  }
+  if (typeof wireNameObj === "number") {
+    console.log("2nd ", wireNameObj, typeof wireNameObj);
+    return wireNameObj;
+  }
+  if (typeof wireNameObj === "undefined") {
+    console.log("3rd ", wireNameObj, typeof wireNameObj);
+    return undefined;
+  }
+
+  if (!wireNameObj.command) {
+    result[wireName] = calculateWire(wireNameObj.args[0]);
+  } else {
+    result[wireName] = bitwise[wireNameObj.command](
+      calculateWire(wireNameObj.args[0]),
+      calculateWire(wireNameObj.args[1])
+    );
+  }
+
+  return result[wireName];
 };
-// test();
-console.log(filteredInput, filteredInput2);
+
+input.forEach((element) => {
+  const parsedInstruction = parseInstruction(element);
+  result[parsedInstruction.destination] = {
+    command: parsedInstruction.command,
+    args: parsedInstruction.args,
+  };
+});
+
+// result["b"] = 46065; // remove/disable this line to get part1
 // console.log(result);
+console.log(calculateWire("lz"));
+console.log(result["lz"]);
+// console.log(calculateWire("lz"));
+// console.log(result["lz"]);
