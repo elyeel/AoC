@@ -87,13 +87,28 @@ const binaryDecode = (str) => {
 
 const resultWBinary = input
   .map((elem) => binaryDecode(elem))
-  .sort((a, b) => a - b)
-  .pop();
+  .sort((a, b) => a - b);
 
 // console.log(binaryDecode("BFFFBBFRRR"));
 // console.log(binaryDecode("FFFBBBFRRR"));
 // console.log(binaryDecode("BBFFBBFRLL"));
 
-console.log(resultWBinary); //part1
+const result2 = [];
+resultWBinary.forEach((elem, i) => {
+  if (i == 0 || i == resultWBinary.length - 1) {
+  } else {
+    if (
+      resultWBinary[i - 1] !== elem - 1 ||
+      resultWBinary[i + 1] !== elem + 1
+    ) {
+      result2.push(elem);
+    }
+  }
+});
 
+console.log(resultWBinary.pop()); //part1
+console.log(result2); //part2
 
+for (i = 530; i < 535; i++) {
+  console.log(resultWBinary[i]);
+}
