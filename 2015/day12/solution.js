@@ -23,3 +23,20 @@ const result2 = JSON.stringify(input2)
   .match(regex)
   .reduce((a, c) => a + Number(c), 0);
 console.log(result2);
+
+// code below not resulting in good result yet
+const altInput = JSON.parse(
+  fs.readFileSync("./2015/day12/input.txt", "utf-8"),
+  (key, value) => {
+    if (Array.isArray(value)) {
+      return value.reduce((a, c) => a + c, '');
+    } else {
+      return Object.values(value).reduce((a, c) => a + c, '');
+    }
+  }
+);
+
+// const altResult = JSON.stringify(altInput)
+//   .match(regex)
+//   .reduce((a, c) => a + Number(c), 0);
+console.log(altInput);

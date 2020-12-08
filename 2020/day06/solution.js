@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { isNull } = require("util");
 const input = fs.readFileSync("./2020/day06/data.txt", "utf8").split("\n");
 console.log(input.length);
 const inputGroup = [];

@@ -59,15 +59,15 @@ const calculateWire = (wireName) => {
   // console.log(wireName, wireNameObj);
 
   if (typeof wireName === "number") {
-    console.log("first ", wireName, typeof wireName);
+    // console.log("first ", wireName, typeof wireName);
     return wireName;
   }
   if (typeof wireNameObj === "number") {
-    console.log("2nd ", wireNameObj, typeof wireNameObj);
+    // console.log("2nd ", wireNameObj, typeof wireNameObj);
     return wireNameObj;
   }
   if (typeof wireNameObj === "undefined") {
-    console.log("3rd ", wireNameObj, typeof wireNameObj);
+    // console.log("3rd ", wireNameObj, typeof wireNameObj);
     return undefined;
   }
 
@@ -93,7 +93,7 @@ input.forEach((element) => {
 
 // result["b"] = 46065; // remove/disable this line to get part1
 // console.log(result);
-console.log(calculateWire("lz"));
-console.log(result["lz"]);
+console.log(calculateWire("b"));
+console.log(result["a"], result["b"]);
 // console.log(calculateWire("lz"));
 // console.log(result["lz"]);
