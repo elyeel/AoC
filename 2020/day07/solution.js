@@ -31,19 +31,24 @@ for (i = 0; i < 9; ++i) {
 console.log(inputData);
 
 const containsShinyGold = (colour) => {
-  // console.log(colour);
+  console.log(inputData[colour]);
   // const bagColour = inputData[colour];
 
-  if (!inputData[colour].some((test) => test === colour)) return false;
-  if (inputData[colour].some((x) => x === "shiny gold")) return true;
-  if (inputData[colour] === null) return false;
+  // if (!inputData[colour].some((test) => test === colour)) return false;
+  if (inputData[colour][0] === "shiny gold") return true;
+  if (inputData[colour]) return false;
 
   const bagContaining = inputData[colour];
   for (const bag of bagContaining) {
-    return containsShinyGold(bag);
+    if (containsShinyGold(bag)) {
+      console.log("here");
+      return true;
+    } else {
+      console.log("not here");
+      return false;
+    } //edit here
   }
 };
-
 const colours = Object.keys(inputData);
 let total = 0;
 // console.log(colours);
