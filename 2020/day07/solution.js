@@ -1,12 +1,10 @@
 const fs = require("fs");
-const input = fs.readFileSync("./2020/day07/control.txt", "utf8").split("\n");
+const input = fs.readFileSync("./2020/day07/data.txt", "utf8").split("\n");
 console.log(input.length);
-
-const map = new Map();
 
 const regexInside = /(\d) (\w+.*) bag/;
 const inputData = {};
-for (i = 0; i < 9; ++i) {
+for (i = 0; i < input.length; ++i) {
   // const obj = {};
   let [key, value] = input[i].split(" bags contain ");
   // console.log("key", key);
@@ -24,66 +22,31 @@ for (i = 0; i < 9; ++i) {
     inputData[key] = valArr;
     // inputData.push(obj);
   } else {
-    inputData[key] = [value];
+    inputData[key] = ["no other"];
   }
 }
 
 console.log(inputData);
+let total = 0;
 
-const containsShinyGold = (colour) => {
-  console.log(inputData[colour]);
-  // const bagColour = inputData[colour];
+const hasShinyGold = (colour) => {
+  if (colour == "shiny gold") return true;
+  if (colour == undefined) return false;
+  if (colour === "no other") return false;
 
-  // if (!inputData[colour].some((test) => test === colour)) return false;
-  if (inputData[colour][0] === "shiny gold") return true;
-  if (inputData[colour]) return false;
+  const hasBags = inputData[colour];
+  if (hasBags === undefined) return false;
 
-  const bagContaining = inputData[colour];
-  for (const bag of bagContaining) {
-    if (containsShinyGold(bag)) {
-      console.log("here");
-      return true;
-    } else {
-      console.log("not here");
-      return false;
-    } //edit here
+  for (const bag of hasBags) {
+    const test = hasShinyGold(bag);
+    if (test === true) return test;
   }
 };
 const colours = Object.keys(inputData);
-let total = 0;
-// console.log(colours);
 
 for (const colour of colours) {
-  if (containsShinyGold(colour)) {
-    console.log(colour);
+  if (colour !== "shiny gold" && hasShinyGold(colour)) {
     total++;
   }
 }
-
 console.log(total);
-
-// const result = {};
-
-// inputData.forEach(({ bags }, bagColour) => {
-//   const { key, value } = bags;
-//   if (Object.values(value).indexOf(bagColour)) {
-//     inputData
-//   }
-// });
-
-// const fillBags = (bag) => {
-//   const bags = result[bag];
-//   if (Object.values(bag).indexOf()) return;
-// };
-
-// class Bags {
-//   constructor(data) {
-//     this.data = data;
-//     this.parent = null;
-//     this.children = {};
-//   }
-
-//   hasShinyBag() {
-
-//   }
-// }
