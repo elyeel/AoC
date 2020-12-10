@@ -59,19 +59,17 @@ for (const colour of colours) {
 
 const canContain = (colour) => {
   const hasBags = inputData[colour];
+  if (colour === "no other") return totalBags;
+  if (colour === undefined) return totalBags;
+  if (hasBags === undefined) return totalBags;
 
   for (const bagObj of hasBags) {
     for (const [bag, value] of Object.entries(bagObj)) {
-      console.log(value);
-      if (bag == "no other") {
-        return totalBags;
-      } else {
-        totalBags += value;
-        canContain(bag);
-        // console.log(bag)
-      }
+      if (bag || value) totalBags += value + canContain(bag);
+      // else return totalBags;
     }
   }
+  return totalBags;
 };
-canContain("shiny gold");
+console.log(canContain("shiny gold"));
 console.log(total, totalBags);
