@@ -8,42 +8,41 @@ console.log(input.length);
 // Part 1
 const highestRated = Math.max(...input);
 const builtInAdapter = highestRated + 3;
-console.log(builtInAdapter);
+const resultObj = {};
 
-const checkDiffWithinRange = (diff, allowed) => {
-  return diff <= allowed && diff > 0 ? true : false;
-};
+const result = input.sort((a, b) => a - b);
+result.push(builtInAdapter);
+result.unshift(0);
 
-const joltRangeArr = (jolt) => {
-  const arr = [];
-  for (let i = 0; i < 3; ++i) {
-    arr.push(jolt + i + 1);
+for (let i = 0; i < result.length - 1; ++i) {
+  const num = result[i + 1] - result[i];
+  resultObj[num] ? resultObj[num]++ : (resultObj[num] = 1);
+}
+
+console.log(result, resultObj);
+
+// Part 2
+const getPrev3Num = (arr, idx) => {
+  const prev3NumArr = [];
+  for (let j = idx - 1; j >= 0; --j) {
+    if (idx - j <= 3) prev3NumArr.push(arr[j]);
   }
-  return arr;
+  return prev3NumArr;
 };
+// console.log(getPrev3Num(input, 2));
 
-// console.log(joltRangeArr(6));
+const distinctCombination = (data) => {
+  const routes = {};
+  routes["0"] = 1;
 
-const createAdapterSeq = (data) => {
-  let jolt = 0;
-  const result = [];
-
-  for (let i = 0; i < data.length; ++i) {
-    const withinRange = joltRangeArr(jolt);
-    console.log(jolt, withinRange);
-    const possibleAdapter = data.map((adapter, idx) => {
-      if (withinRange.some((elem) => elem === adapter)) {
-        return idx;
-      }
-    });
-
-    const chosenAdapterIdx = Math.min(...possibleAdapter);
-    // console.log(chosenAdapterIdx, possibleAdapter);
-    jolt = data[chosenAdapterIdx];
-    // console.log(jolt);
-    result.push(data[chosenAdapterIdx]);
+  for (let i = 1; i < data.length; ++i) {
+    routes[data[i]] = 0;
+    getPrev3Num(data,i).map(elem => {
+      if (data[i] - elem <= 3) routes[data[i]] += routes[elem]
+    })
   }
-  return result;
+
+  return routes;
 };
 
-console.log(createAdapterSeq(input));
+console.log(distinctCombination(input));
