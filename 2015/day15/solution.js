@@ -15,7 +15,9 @@ input.forEach((elem) => {
 console.log(inputObj);
 
 const countScore = (obj) => {
+  const resultObj = {};
   const result = [];
+  const resultWCalories = [];
   for (let i = 0; i <= 100; ++i) {
     for (let j = 0; j <= 100 - i; ++j) {
       for (let k = 0; k <= 100 - i - j; ++k) {
@@ -40,20 +42,32 @@ const countScore = (obj) => {
           obj.Candy.texture * j +
           obj.Butterscotch.texture * k +
           obj.Sugar.texture * l;
-        if (capacity < 0 || durability < 0 || flavor < 0 || texture < 0)
-          result.push(0);
-        else result.push(capacity * durability * flavor * texture);
+        const calories =
+          obj.Frosting.calories * i +
+          obj.Candy.calories * j +
+          obj.Butterscotch.calories * k +
+          obj.Sugar.calories * l;
+        const quality = capacity * durability * flavor * texture;
+        if (capacity > 0 && durability > 0 && flavor > 0 && texture > 0) {
+          result.push(quality);
+          if (calories === 500) resultWCalories.push(quality);
+        }
       }
     }
   }
-  return result;
+  resultObj.result = result;
+  resultObj.wCalories = resultWCalories;
+  return resultObj;
 };
 const score = countScore(inputObj);
-const getAboveZero = (arr) => {
-  const result = [];
-  arr.map((x, i) => {
-    x > 0 ? result.push(arr[i]) : null;
-  });
-  return result;
-};
-console.log(getAboveZero(score));
+console.log(Math.max(...score.result));
+console.log(Math.max(...score.wCalories));
+
+// const getAboveZero = (arr) => {
+//   const result = [];
+//   arr.map((x, i) => {
+//     x > 0 ? result.push(arr[i]) : null;
+//   });
+//   return result;
+// };
+// console.log(getAboveZero(score));
