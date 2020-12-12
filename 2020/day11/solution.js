@@ -1,4 +1,3 @@
-const { dir } = require("console");
 const fs = require("fs");
 const oldSeats = fs
   .readFileSync("./2020/day11/data.txt", "utf8")
@@ -81,7 +80,6 @@ const checkByDirection = (seats, cX, cY) => {
 const fillSeats = (seats, limit, adjacent) => {
   let newSeats = [];
   let firstLimit = 0;
-  // if (!adjacent) firstLimit = limit;
 
   for (let i = 0; i < seats.length; ++i) {
     // i = y
@@ -94,11 +92,8 @@ const fillSeats = (seats, limit, adjacent) => {
       } else {
         count = checkByDirection(seats, j, i);
       }
-      // if (i == 0 && j == 3) console.log(seats[i][j])
 
-      // fix here for part 2
       if (seats[i][j] === "L" && count == 0) rowSeats += "#";
-      // change count >= ... to count == for part 1, for part 1 need 'count == 0'
       else if (seats[i][j] === "#" && count >= limit) rowSeats += "L";
       else if (seats[i][j] === ".") rowSeats += ".";
       else rowSeats += seats[i][j];
