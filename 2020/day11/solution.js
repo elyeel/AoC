@@ -1,7 +1,7 @@
 const { dir } = require("console");
 const fs = require("fs");
 const oldSeats = fs
-  .readFileSync("./2020/day11/control2.txt", "utf8")
+  .readFileSync("./2020/day11/data.txt", "utf8")
   .split("\n");
 // .map((x) => parseInt(x));
 console.log(oldSeats[8].length);
@@ -60,7 +60,9 @@ const checkByDirection = (seats, cX, cY) => {
       coordY >= 0 &&
       coordY < seats.length
     ) {
-      if (seats[coordY][coordX] === "#") {
+      if (seats[coordY][coordX] === "L") found = true;
+      // this line added to fix issue of checking only for "#"
+      else if (seats[coordY][coordX] === "#") {
         filledAdjc++;
         found = true;
       } else {
@@ -73,21 +75,31 @@ const checkByDirection = (seats, cX, cY) => {
   return filledAdjc;
 };
 
-// console.log("Should get 8 :", checkByDirection(oldSeats, 3, 4)); // this run okay
+// console.log("Should get 8 :", checkByDirection(oldSeats, 3, 0)); // this run okay
 // console.log(checkAdjacent(oldSeats, 2, 3)); // run okay
 
-const fillSeats = (seats, limit) => {
+const fillSeats = (seats, limit, adjacent) => {
   let newSeats = [];
+  let firstLimit = 0;
+  // if (!adjacent) firstLimit = limit;
 
   for (let i = 0; i < seats.length; ++i) {
     // i = y
     let rowSeats = "";
     for (let j = 0; j < seats[i].length; ++j) {
       //j = x
-      if (seats[i][j] === "L" && checkAdjacent(seats, j, i) == 0)
-        rowSeats += "#";
-      else if (seats[i][j] === "#" && checkAdjacent(seats, j, i) >= limit)
-        rowSeats += "L";
+      let count = 0;
+      if (adjacent) {
+        count = checkAdjacent(seats, j, i);
+      } else {
+        count = checkByDirection(seats, j, i);
+      }
+      // if (i == 0 && j == 3) console.log(seats[i][j])
+
+      // fix here for part 2
+      if (seats[i][j] === "L" && count == 0) rowSeats += "#";
+      // change count >= ... to count == for part 1, for part 1 need 'count == 0'
+      else if (seats[i][j] === "#" && count >= limit) rowSeats += "L";
       else if (seats[i][j] === ".") rowSeats += ".";
       else rowSeats += seats[i][j];
     }
@@ -98,22 +110,21 @@ const fillSeats = (seats, limit) => {
 };
 
 // console.log(JSON.stringify(fillSeats(oldSeats), null, 2)); // run okay
-
 // const testSeats = fillSeats(oldSeats);
 // console.log(JSON.stringify(fillSeats(testSeats), null, 2)); // run okay
 
-const runFillUntilSettled = (seats, limit) => {
+const runFillUntilSettled = (seats, limit, adjacent) => {
   let changed = true;
-  let oldSeats = fillSeats(seats, limit);
+  let oldSeats = fillSeats(seats, limit, adjacent);
   while (changed) {
-    const newSeats = fillSeats(oldSeats, limit);
+    const newSeats = fillSeats(oldSeats, limit, adjacent);
     if (JSON.stringify(oldSeats) === JSON.stringify(newSeats)) changed = false;
     else oldSeats = newSeats;
   }
   return oldSeats;
 };
 
-const stableSeats = runFillUntilSettled(oldSeats, 4);
+const stableSeats = runFillUntilSettled(oldSeats, 4, true);
 
 const occupiedSeats = (seats) => {
   let count = 0;
@@ -126,10 +137,11 @@ const occupiedSeats = (seats) => {
 };
 
 // console.log(JSON.stringify(runFillUntilSettled(oldSeats), null, 2));
-console.log(JSON.stringify(stableSeats, null, 2));
+// console.log(JSON.stringify(stableSeats, null, 2));
 console.log(occupiedSeats(stableSeats));
 
 // Part 2
 // take five or more occupied before emptying a seat
-const stableSeatsW5 = runFillUntilSettled(oldSeats, 5);
+const stableSeatsW5 = runFillUntilSettled(oldSeats, 5, false);
+// console.log(JSON.stringify(stableSeats, null, 2));
 console.log(occupiedSeats(stableSeatsW5));
