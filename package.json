@@ -17,5 +17,9 @@
     "url": "https://github.com/elyeel/AoC/issues"
   },
   "homepage": "https://github.com/elyeel/AoC#readme",
-  "devDependencies": {}
+  "devDependencies": {},
+  "dependencies": {
+    "combinatorics": "^0.1.0",
+    "js-combinatorics": "^1.4.5"
+  }
 }
