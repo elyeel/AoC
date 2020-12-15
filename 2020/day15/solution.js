@@ -58,5 +58,5 @@ const part1Runner = (obj, start, end, lastNumber) => {
   }
   return nextNumber;
 };
-console.log(part1Runner(inputObj, 6, 30000000, 20));
+console.log(part1Runner(inputObj, 6, 30000000, 20)); //part 1 & 2 using the same runner, part2 took about 12 mins to get the result
 // console.log(controlObj);
