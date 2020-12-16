@@ -58,5 +58,23 @@ const part1Runner = (obj, start, end, lastNumber) => {
   }
   return nextNumber;
 };
-console.log(part1Runner(inputObj, 6, 30000000, 20)); //part 1 & 2 using the same runner, part2 took about 12 mins to get the result
+
+const optimizedRunner = (data, n) => {
+  let prev = data[data.length - 1];
+  const lastNumber = new Array(n);
+
+  data.forEach((val, i) => (lastNumber[val] = i + 1));
+
+  for (let i = data.length; i < n; ++i) {
+    const next = lastNumber[prev] ? i - lastNumber[prev] : 0;
+    lastNumber[prev] = i;
+    prev = next;
+  }
+
+  return prev;
+};
+
+console.log(optimizedRunner(input, 30000000));
+
+// console.log(part1Runner(inputObj, 6, 30000000, 20)); //part 1 & 2 using the same runner, part2 took about 12 mins to get the result
 // console.log(controlObj);
