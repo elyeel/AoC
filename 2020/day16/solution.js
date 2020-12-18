@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { Z_NO_COMPRESSION } = require("zlib");
 const [range, yourTicket, nearbyTickets] = fs
   .readFileSync("./2020/day16/data.txt", "utf8")
   .split("\n\n");
