@@ -78,4 +78,4 @@ for (const [key, value] of rangeMap) {
 
 // Object.entries(correct).sort(({keya: a}, {keyb: b}) => b.length - a.length)
 console.log(correct);
-console.log(131 * 67 * 103 * 109 * 71 * 89);
+console.log(131 * 67 * 103 * 109 * 71 * 89); // solved by process of elimination on a paper, multiple possible solutions. I was lucky with my first guess
