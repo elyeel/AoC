@@ -19,12 +19,10 @@ const part1Runner = (maxCap) => {
     i++;
     i % 10000 === 0 ? console.log(i) : null;
   }
-  console.log(i);
-
-  let bott = 786240;
+  return i;
 };
 
-// console.log(part1Runner(input));
+console.log(part1Runner(input));
 // Part 2
 
 const presents = [];
