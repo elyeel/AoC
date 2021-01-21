@@ -12,7 +12,7 @@ const boss = {
   damage,
   armor,
 };
-// console.log(play);
+// console.log(boss);
 const shop = {
   weapons: {
     Dagger: { cost: 8, damage: 4, armor: 0 },
@@ -41,7 +41,7 @@ const shop = {
 const movesNeeded = (defHP, attDamage, defArmor) => {
   return Math.ceil(defHP / Math.max(attDamage - defArmor, 1));
 };
-// console.log(movesNeeded(8, 7, 5), movesNeeded(12, 5, 2));
+// console.log(movesNeeded(104, 11, 1), movesNeeded(100, 8, 11));
 
 const playRunner = (data) => {
   // rpg play simulation
@@ -63,8 +63,7 @@ const playRunner = (data) => {
 const part1 = (boss, shop) => {
   // set player to combination of weapon, armor, and ring
   const players = new Map();
-  const armors = Object.values(shop.armors);
-  const rings = Object.values(shop.rings);
+
   for (const [key, value] of Object.entries(shop.weapons)) {
     players.set(key, value);
     for (const [keyA, valueA] of Object.entries(shop.armors)) {
@@ -96,28 +95,103 @@ const part1 = (boss, shop) => {
         }
       }
     }
+    // for options weapon + ring only
+    for (const [keyR, valueR] of Object.entries(shop.rings)) {
+      const costR = value.cost + valueR.cost;
+      const damageR = value.damage + valueR.damage;
+      const armorR = value.armor + valueR.armor;
+      players.set(`${key}${keyR}`, {
+        cost: costR,
+        damage: damageR,
+        armor: armorR,
+      });
+      for (const [keyR2, valueR2] of Object.entries(shop.rings)) {
+        if (keyR === keyR2) continue;
+        else {
+          const costR2 = costR + valueR2.cost;
+          const armorR2 = armorR + valueR2.armor;
+          const damageR2 = damageR + valueR2.damage;
+          players.set(`${key}${keyR}${keyR2}`, {
+            cost: costR2,
+            damage: damageR2,
+            armor: armorR2,
+          });
+        }
+      }
+    }
   }
   // console.log(players);
 
   // iteration on players
   const result = [];
-  for (const [key, value] of players.entries()) {
-    const bossVal = movesNeeded(boss.hitPoints, value.damage, boss.armor);
-    const playerVal = movesNeeded(100, boss.damage, value.armor);
-    const winner = bossVal >= playerVal ? key : "boss";
-    result.push({ [key]: { winner, cost: value.cost } });
-  }
-  // console.log(result);
-  return result;
+  // activate below for not using play simulation approach
+  // for (const [key, value] of players.entries()) {
+  //   const playerVal = movesNeeded(boss.hitPoints, value.damage, boss.armor);
+  //   const bossVal = movesNeeded(100, boss.damage, value.armor);
+  //   const winner = bossVal >= playerVal ? key : "boss";
+  //   result.push({ [key]: { winner, cost: value.cost } });
+  // }
+  // console.log(players.size);
+  return players;
 };
 
-const winners = part1(boss, shop);
-console.log(
-  winners.reduce((a, c) => {
-    const [key, value] = Object.entries(c);
-    // console.log(value);
-    if (key[1].winner !== "boss") {
-      return Math.min(a, key[1].cost);
-    } else return 1000
-  })
-);
+const options = part1(boss, shop);
+
+const simulatePlay = (options, boss) => {
+  // rpg play simulation
+  let minWin = Infinity,
+    maxLose = -Infinity;
+
+  for (const option of options.values()) {
+    const player = {
+      hitPoints: 100,
+      damage: option.damage,
+      armor: option.armor,
+      cost: option.cost,
+    };
+    const bossInPlay = { ...boss };
+    // console.log(player, bossInPlay);
+
+    let i = 0;
+    while (bossInPlay.hitPoints > 0 && player.hitPoints > 0) {
+      ++i;
+      if (i % 2 != 0) {
+        //player turn, odd numbered
+        if (bossInPlay.armor >= player.damage) {
+          bossInPlay.hitPoints -= 1;
+          // console.log("got here");
+        } else bossInPlay.hitPoints -= player.damage - bossInPlay.armor;
+      } else {
+        // boss turn
+        if (player.armor >= bossInPlay.damage) {
+          // console.log("got here boss");
+          player.hitPoints -= 1;
+        } else player.hitPoints -= bossInPlay.damage - player.armor;
+      }
+    }
+    // console.log(player, bossInPlay);
+
+    player.hitPoints > 0 ? (minWin = Math.min(minWin, player.cost)) : null;
+    if (bossInPlay.hitPoints > 0) maxLose = Math.max(maxLose, player.cost);
+  }
+  return { minWin, maxLose };
+};
+console.log(boss);
+console.log(simulatePlay(options, boss));
+
+// activate below for no play simulation approach
+// let min = 1000,
+//   maxLose = 0;
+// for (const option of options) {
+//   // console.log(Object.entries(win));
+//   for (const [key, value] of Object.entries(option)) {
+//     if (value.winner !== "boss") {
+//       min > value.cost ? (min = value.cost) : min;
+//       // console.log(key, value);
+//     } else {
+
+//       maxLose < value.cost ? (maxLose = value.cost) : maxLose;
+//     }
+//   }
+// }
+// console.log(min, maxLose);
