@@ -27,22 +27,23 @@ do {
   // instructions[o](x, y);
 
   const line = input[i];
-  if (line && line[0] === "jmp") {
-    i += +line[1] - 1;
-  }
-  if (line && line[0] === "jie") {
-    const value = line[2].match(regex);
-    if (registers[line[1]] % 2 === 0)
-      value[1] === "+" ? (i += parseInt(value[2]) - 1) : 0;
-  }
-  if (line && line[0] === "jio") {
-    const value = line[2].match(regex);
-    if (registers[line[1]] === 1)
-      value[1] === "+" ? (i += parseInt(value[2]) - 1) : 0;
-  }
-  if (line && line[0] === "tpl") registers[line[1]] *= 3;
-  if (line && line[0] === "inc") registers[line[1]]++;
-  if (line && line[0] === "hlf") registers[line[1]] *= 0.5;
+  line ? instructions[line[0]](line[1], line[2]) : null;
+  // if (line && line[0] === "jmp") {
+  //   i += +line[1] - 1;
+  // }
+  // if (line && line[0] === "jie") {
+  //   const value = line[2].match(regex);
+  //   if (registers[line[1]] % 2 === 0)
+  //     value[1] === "+" ? (i += parseInt(value[2]) - 1) : 0;
+  // }
+  // if (line && line[0] === "jio") {
+  //   const value = line[2].match(regex);
+  //   if (registers[line[1]] === 1)
+  //     value[1] === "+" ? (i += parseInt(value[2]) - 1) : 0;
+  // }
+  // if (line && line[0] === "tpl") registers[line[1]] *= 3;
+  // if (line && line[0] === "inc") registers[line[1]]++;
+  // if (line && line[0] === "hlf") registers[line[1]] *= 0.5;
   // console.log(line, i, registers);
 } while (i++ < input.length);
 console.log(registers);
