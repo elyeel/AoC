@@ -1,4 +1,5 @@
-const fs = require('fs');
+import fs from 'fs';
+import permutator from '../../helpers/permutator.js';
 const input = fs.readFileSync('./2015/day09/data.txt', 'utf8').split('\n');
 console.log(input.length);
 
@@ -16,28 +17,6 @@ const real = input.map((x) => {
 	}
 });
 // console.log(townDist);
-
-const permutator = (inputArr) => {
-	//input in array, returns array of permutation array
-	let result = [];
-
-	const permute = (arr, m = []) => {
-		if (arr.length === 0) {
-			result.push(m);
-		} else {
-			for (let i = 0; i < arr.length; i++) {
-				let curr = arr.slice();
-				let next = curr.splice(i, 1);
-				permute(curr.slice(), m.concat(next));
-			}
-		}
-	};
-
-	permute(inputArr);
-
-	return result;
-};
-
 // console.log(permutator([ 'a', 'b', 'c' ]));
 const delivery = permutator([ ...towns ]);
 // console.log(delivery);
