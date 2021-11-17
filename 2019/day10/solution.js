@@ -25,6 +25,8 @@ for (let [ coord, valueObj ] of coordMap.entries()) {
 
 					const dx = valObj.x - valueObj.x;
 					const dy = valObj.y - valueObj.y;
+					const dy2 = valueObj.y - valObj.y;
+					// console.log(dy, '-', dy2);
 					const arcTan = Math.atan2(dy, dx);
 					asteroid.add(arcTan);
 				} else {
@@ -45,5 +47,35 @@ for (const obj of coordMap.values()) {
 		max.value = obj.detected;
 	}
 }
-console.log(max);
+console.log(max); //answer for part1
 //part 2
+const asteroid = new Set();
+const asteroidMap = new Map();
+for (let valObj of coordMap.values()) {
+	if (valObj.value === '#') {
+		if (max.x !== valObj.x || max.y !== valObj.y) {
+			// console.log(coord);
+
+			const dx = valObj.x - max.x;
+			const dy = valObj.y - max.y;
+			// const dy = max.y - valObj.y;
+			// console.log(dy, '-', dy2);
+			let arcTan = Math.atan2(dy, dx);
+			// if (arcTan < 0) arcTan += 2 * Math.PI;
+			// asteroid.add(180 * arcTan / Math.PI);
+
+			// different solution
+			let angle = arcTan + Math.PI / 2;
+			if (angle < 0) angle += Math.PI * 2;
+
+			asteroid.add(angle * 180 / Math.PI);
+			if (!asteroidMap.has(`${valObj.x}-${valObj.y}`))
+				asteroidMap.set(`${valObj.x}-${valObj.y}`, {
+					angle: angle * 180 / Math.PI
+				});
+		} else {
+		}
+	}
+}
+console.log([ ...asteroid ].sort((a, b) => a - b)[199]); //got the angle and find the coordinate on asteroidMap
+console.log(asteroidMap);
