@@ -1,4 +1,3 @@
-import { INSPECT_MAX_BYTES } from 'buffer';
 import fs from 'fs';
 const input = fs
 	.readFileSync('./2016/day01/data.txt', 'utf-8')
