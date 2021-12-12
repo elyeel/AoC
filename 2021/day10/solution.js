@@ -1,35 +1,47 @@
 import fs from 'fs';
 const data = fs
-	.readFileSync('./2021/day10/control.txt', 'utf-8')
+	.readFileSync('./2021/day10/data.txt', 'utf-8')
 	.trim()
 	.split(/\n/)
 	.map((x) => x.split(''));
 
 console.log(data);
+// stack problem, LIFO
 
-const test = (line) => {
-	const syntax = {
-		'[': 0,
-		'(': 0,
-		'{': 0,
-		'<': 0,
-		']': 0,
-		')': 0,
-		'}': 0,
-		'>': 0
-	};
-	line.forEach((e) => {
-		if (e === '{' || e === '(' || e === '[' || e === '<') {
-			syntax[e]++;
-		} else {
-			syntax[e]--;
-			// if (e === ')') syntax['(']--;
-			// if (e === '}') syntax['{']--;
-			// if (e === ']') syntax['[']--;
-			// if (e === '>') syntax['<']--;
-		}
-	});
-	console.log(syntax);
+const closingChar = {
+	'[': ']',
+	'(': ')',
+	'{': '}',
+	'<': '>'
+};
+const points = {
+	')': 3,
+	']': 57,
+	'}': 1197,
+	'>': 25137
 };
 
-data.forEach((x) => test(x));
+const solution = (line) => {
+	const char = [];
+	const error = [];
+
+	line.forEach((e) => {
+		for (let i = 0; i < e.length; i++) {
+			const elem = e[i];
+			if (elem === '{' || elem === '(' || elem === '[' || elem === '<') {
+				char.push(closingChar[elem]);
+			} else {
+				const expect = char.pop();
+				if (expect !== elem) {
+					error.push(elem);
+					break;
+				}
+			}
+		}
+	});
+	// console.log(error, points[error[0]]);
+
+	return error.reduce((a, c) => a + points[c], 0);
+};
+
+console.log(solution(data));
