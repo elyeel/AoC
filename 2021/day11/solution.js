@@ -56,11 +56,11 @@ const solution = (octopuses, step = 1) => {
 			console.log(octopuses[y].join``);
 		}
 
-		if (innerCount === 100)
+		if (innerCount === octopuses.length * octopuses[1].length)
 			console.log(`All octopuses flashed together at step ${i + 1}`);
 	}
 	// console.log(octopuses);
 	return count;
 };
 
-console.log(solution(data, 250));
+console.log(solution(data, 100)); //change step# to solve part1/part2
