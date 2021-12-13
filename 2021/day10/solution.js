@@ -5,7 +5,7 @@ const data = fs
 	.split(/\n/)
 	.map((x) => x.split(''));
 
-console.log(data);
+// console.log(data);
 // stack problem, LIFO
 
 const closingChar = {
@@ -20,12 +20,21 @@ const points = {
 	'}': 1197,
 	'>': 25137
 };
+const closingPoints = {
+	')': 1,
+	']': 2,
+	'}': 3,
+	'>': 4
+};
 
-const solution = (line) => {
-	const char = [];
+const solution = (line, p = 1) => {
 	const error = [];
+	const completion = [];
 
 	line.forEach((e) => {
+		const char = [];
+
+		let corrupted = false;
 		for (let i = 0; i < e.length; i++) {
 			const elem = e[i];
 			if (elem === '{' || elem === '(' || elem === '[' || elem === '<') {
@@ -34,14 +43,26 @@ const solution = (line) => {
 				const expect = char.pop();
 				if (expect !== elem) {
 					error.push(elem);
+					corrupted = true;
 					break;
 				}
 			}
 		}
+
+		if (!corrupted && char.length > 0 && p === 2) {
+			// need to reverse the char
+			const lnCompletionScore = char
+				.reverse()
+				.reduce((a, c) => a * 5 + closingPoints[c], 0);
+			// console.log(char, lnCompletionScore);
+			completion.push(lnCompletionScore);
+		}
 	});
 	// console.log(error, points[error[0]]);
-
-	return error.reduce((a, c) => a + points[c], 0);
+	const med = Math.floor(completion.length / 2);
+	const part2 = completion.sort((a, b) => a - b)[med];
+	const part1 = error.reduce((a, c) => a + points[c], 0);
+	return { part1, part2 };
 };
 
-console.log(solution(data));
+console.log(solution(data, 2));
