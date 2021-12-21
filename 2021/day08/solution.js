@@ -1,7 +1,6 @@
 import fs from 'fs';
-import { serialize } from 'v8';
 const data = fs
-	.readFileSync('./2021/day08/control2.txt', 'utf-8')
+	.readFileSync('./2021/day08/data.txt', 'utf-8')
 	.split(/\n/)
 	.map((x) => x.split(' | ').map((x) => x.split(' ')));
 
@@ -96,12 +95,31 @@ const solution = (lines, p = 1) => {
 			number[8] = eight;
 			number[9] = nine;
 			number[0] = zero;
+			// console.log(number);
 
-			console.log(number);
+			const outputNumber = output
+				.map((pattern) => {
+					for (const [ num, chars ] of Object.entries(number)) {
+						// console.log('here', { num, chars, pattern });
+						if (
+							chars.length === pattern.length &&
+							chars.every((x) => pattern.includes(x))
+						)
+							return num;
+					}
+					// Object.entries(number).forEach(([ num, chars ]) => {
+					// 	if (chars.every((x) => pattern.split('').some((y) => y === x)))
+					// 		return num;
+					// });
+				})
+				.join('');
+			// console.log(outputNumber);
+			return +outputNumber;
 		}
 	});
-	console.log(result);
-	if (p === 1) console.log(result.flat().filter((x) => x !== undefined).length);
+	// console.log(result);
+	if (p === 1) return result.flat().filter((x) => x !== undefined).length;
+	else return result.reduce((a, c) => a + c);
 };
 
-solution(data, 2);
+console.log(solution(data, 2));
