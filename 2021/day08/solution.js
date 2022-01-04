@@ -59,6 +59,7 @@ const solution = (lines, p = 1) => {
 				.split('');
 			// console.log(six, six.join(''));
 
+			//filter out zero from other sixChars
 			const zero = sixChars
 				.filter(
 					(pattern) => pattern !== nine.join('') && pattern !== six.join('')
@@ -66,7 +67,7 @@ const solution = (lines, p = 1) => {
 				.split('');
 			// console.log(zero);
 
-			// find two from fiveChars using either six or nine
+			// find two from fiveChars using either six or nine, must have 5 out of 6 chars from six or nine
 			const two = fiveChars
 				.filter((pattern) => {
 					let count = 0;
@@ -78,6 +79,7 @@ const solution = (lines, p = 1) => {
 				.split('');
 			// console.log(two);
 
+			// filter out five from two and three patterns
 			const five = fiveChars
 				.filter(
 					(pattern) => pattern !== two.join('') && pattern !== three.join('')
