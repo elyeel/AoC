@@ -22,6 +22,7 @@
 	"dependencies": {
 		"combinatorics": "^0.1.0",
 		"fs": "0.0.1-security",
-		"js-combinatorics": "^1.4.5"
+		"js-combinatorics": "^1.4.5",
+		"universal-perf-hooks": "^1.0.1"
 	}
 }
