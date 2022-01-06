@@ -1,7 +1,7 @@
 {
 	"name": "AoC",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Advent of Code solution",
 	"main": "day01.js",
 	"type": "module",
 	"scripts": {
@@ -12,7 +12,7 @@
 		"url": "git+https://github.com/elyeel/AoC.git"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Risyardi Iswanto",
 	"license": "ISC",
 	"bugs": {
 		"url": "https://github.com/elyeel/AoC/issues"
@@ -23,6 +23,7 @@
 		"combinatorics": "^0.1.0",
 		"fs": "0.0.1-security",
 		"js-combinatorics": "^1.4.5",
+		"md5": "^2.3.0",
 		"universal-perf-hooks": "^1.0.1"
 	}
 }
