@@ -1,6 +1,6 @@
 import fs from "fs";
 const input = fs
-  .readFileSync("./2021/day25/control.txt", "utf-8")
+  .readFileSync("./2021/day25/control1.txt", "utf-8")
   .split("\n")
   .map((x) => x.split(""));
 
@@ -8,8 +8,8 @@ const input = fs
 
 const solution = (input, step = 1) => {
   while (step > 0) {
+    // eastbound first
     for (let y = 0; y < input.length; ++y) {
-      const newY = [];
       for (let x = 0; x < input[y].length; ++x) {
         if (input[y][x] === ">") {
           if (x === input[y].length - 1) {
@@ -17,7 +17,7 @@ const solution = (input, step = 1) => {
               input[y][0] = ">";
               input[y][x] = ".";
             }
-          } else {
+          } else if (!input[y][x][1]) {
             if (input[y][x + 1] === ".") {
               input[y][x + 1] = [">", true];
               input[y][x] = ".";
@@ -29,6 +29,8 @@ const solution = (input, step = 1) => {
         } else if (input[y][x][1]) input[y][x] = input[y][x][0];
       }
     }
+
+    // southbound last
     for (let y = 0; y < input.length; ++y) {
       // let flag = false;
       for (let x = 0; x < input[y].length; ++x) {
@@ -56,4 +58,63 @@ const solution = (input, step = 1) => {
   return input.map((x) => x.join(""));
 };
 
-console.log(solution(input, 2));
+const solution1 = (input, step = 1) => {
+  while (step > 0) {
+    // eastbound first
+    for (let y = 0; y < input.length; ++y) {
+      for (let x = 0; x < input[y].length; ++x) {
+        // if '>>>>' check right of it then moves/stay
+        if (input[y][x] === ">") {
+          // empty right -> moves
+          if (input[y][x + 1] === ".") {
+            input[y][x + 1] = [">", true];
+            input[y][x] = ".";
+          }
+          // ends -> check x = 0 -> empty -> moves
+          if (input[y].length - 1 === x) {
+            if (input[y][0] === ".") {
+              input[y][0] = [">", true];
+              input[y][x] = ".";
+            }
+          }
+        }
+        // ignore everything else
+      }
+    }
+
+    // southbound last
+    for (let y = 0; y < input.length; ++y) {
+      for (let x = 0; x < input[y].length; ++x) {
+        // if 'vvvv' check below of it then moves/stay
+        if (input[y][x] === "v") {
+          // empty below -> moves
+          if (y !== input.length - 1) {
+            if (input[y + 1][x] === ".") {
+              input[y + 1][x] = ["v", true];
+              input[y][x] = ".";
+            }
+          }
+          // ends -> check y = 0 -> empty -> moves
+          if (input.length - 1 === y) {
+            if (input[0][x] === ".") {
+              input[0][x] = ["v", true];
+              input[y][x] = ".";
+            }
+          }
+        }
+        // ignore everything else
+      }
+    }
+
+    // remove true from input
+    for (let y = 0; y < input.length; ++y) {
+      for (let x = 0; x < input[y].length; ++x) {
+        if (input[y][x][1]) input[y][x] = input[y][x][0];
+      }
+    }
+    --step;
+  }
+  return input.map((x) => x.join(""));
+};
+
+console.log(solution1(input, 1));
