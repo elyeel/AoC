@@ -10,7 +10,7 @@ const decodeRange = (line) => {
     e2Up: +range[4],
     e1Array: Array.from(
       { length: +range[2] - range[1] + 1 },
-      (_, i) => i + +range[1]
+      (_, i) => i + +range[1] // generating an array from the range of elves 1
     ),
     e2Array: Array.from(
       { length: +range[4] - range[3] + 1 },
