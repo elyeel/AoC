@@ -17,17 +17,23 @@ const data = fs
 
 // console.log(data);
 
-const solution = (monkeys, round = 20) => {
+const solution = (monkeys, round = 20, part = 1) => {
+  // using LCM method to simplify big number in part 2, thanks redditor! https://www.reddit.com/r/adventofcode/comments/zih7gf/2022_day_11_part_2_what_does_it_mean_find_another/
+  const mod = monkeys
+    .map(({ divisibleBy }) => divisibleBy)
+    .reduce((a, c) => a * c);
+
   while (round > 0) {
     monkeys.forEach((monkey) => {
       monkey.items.forEach((item) => {
-        const worryLevel = Math.floor(monkey.op(item) / 3);
+        const worryLevel =
+          part === 1 ? Math.floor(monkey.op(item) / 3) : monkey.op(item) % mod;
         worryLevel % monkey.divisibleBy === 0
           ? monkeys[monkey.toMonkey[0]].items.push(worryLevel)
           : monkeys[monkey.toMonkey[1]].items.push(worryLevel);
         ++monkey.inspects;
       });
-      monkey.items = [];
+      monkey.items = []; // zero the items, given to other monkey
     });
     --round;
   }
@@ -38,6 +44,6 @@ const solution = (monkeys, round = 20) => {
   console.log("Multiplication result = ", mostActiveMultiplied);
 };
 
-solution(data);
+solution(data, 10000, 2);
 
 console.log(data);
