@@ -5,6 +5,7 @@ const input = fs.readFileSync("./2023/day01/data.txt", "utf8").split("\n");
 // const response = await fetch("https://adventofcode.com/2023/day/1/input");
 // const txt = await response.text();
 // const inputs = txt.trim().split("\n");
+
 const regexP1 = /[1-9]/g;
 const regex = /([1-9]|one|two|three|four|five|six|seven|eight|nine)/g;
 const regexOverLap =
@@ -13,25 +14,26 @@ const regexOverLap =
 console.log("Lines of data = ", input.length);
 console.log(input[201]);
 
-const solutionPart1 = (data) => {
-  const numbersPerLine = data
-    .map((x) => x.split(""))
-    .map((x) => x.map((y) => (Number.isInteger(+y) ? +y : null)))
-    .map((line) => line.filter((num) => Number.isInteger(num)));
-  // console.log(numbersPerLine);
+// Solution for part 1 merged with part 2 below
+// const solutionPart1 = (data) => {
+//   const numbersPerLine = data
+//     .map((x) => x.split(""))
+//     .map((x) => x.map((y) => (Number.isInteger(+y) ? +y : null)))
+//     .map((line) => line.filter((num) => Number.isInteger(num)));
+//   // console.log(numbersPerLine);
 
-  // getting number from front and back
-  const result = numbersPerLine
-    .map((line) => line.slice(0, 1) + line.slice(-1))
-    .reduce((a, c) => +a + Number(c), 0);
+//   // getting number from front and back
+//   const result = numbersPerLine
+//     .map((line) => line.slice(0, 1) + line.slice(-1))
+//     .reduce((a, c) => +a + Number(c), 0);
 
-  console.log(result);
+//   console.log(result);
 
-  return result;
-};
-solutionPart1(input);
+//   return result;
+// };
+// solutionPart1(input);
 
-const solutionPart2 = (data) => {
+const solution = (data) => {
   const numObject = {
     one: "1",
     two: "2",
@@ -54,6 +56,13 @@ const solutionPart2 = (data) => {
     eighthree: "eightthree",
     twone: "twoone",
   };
+
+  const part1 = data.map((line) => {
+    const numbPerLineP1 = line.match(regexP1);
+    return numbPerLineP1[0].concat(numbPerLineP1.slice(-1));
+  });
+  let resultP1 = part1.reduce((a, c) => +a + Number(c));
+  console.log("Result part 1 ", resultP1);
 
   const numbersInDecodedLines = data.map((line) => {
     const numPerLine = [];
@@ -108,7 +117,7 @@ const solutionPart2 = (data) => {
     .map((line) => line.slice(0, 1) + line.slice(-1))
     .reduce((a, c) => +a + Number(c));
 
-  console.log(result);
+  console.log("Solution for part 2 =", result);
 };
 
-solutionPart2(input);
+solution(input);
