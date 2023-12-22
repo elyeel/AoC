@@ -1,6 +1,6 @@
 import fs from "fs";
 const inputs = fs
-  .readFileSync("./2023/day02/control.txt", "utf8")
+  .readFileSync("./2023/day02/data.txt", "utf8")
   .split("\n")
   .map((x) => x.split(": "));
 
@@ -8,10 +8,11 @@ const inputs = fs
 // const txt = await response.text();
 // const inputs = txt.trim().split("\n");
 
-console.log(inputs);
+// console.log(inputs);
 const blueRegex = /(?<num>\d+) blue/g;
 const greenRegex = /(?<num>\d+) green/g;
 const redRegex = /(?<num>\d+) red/g;
+let resultPart2 = [];
 
 // build the data
 const data = inputs.map((line, i) => {
@@ -27,7 +28,7 @@ const data = inputs.map((line, i) => {
   const redSets = [...line[1].matchAll(redRegex)].sort(
     (a, b) => +a.groups.num - +b.groups.num
   );
-  console.log(greenSets);
+  // console.log("Example of greensets : ", greenSets);
 
   redSets.forEach((set) => {
     if (+set.groups.num > 12) ++count;
@@ -38,16 +39,18 @@ const data = inputs.map((line, i) => {
   blueSets.forEach((set) => {
     if (+set.groups.num > 14) ++count;
   });
+  game.red = +redSets[redSets.length - 1].groups.num;
+  game.green = +greenSets[greenSets.length - 1].groups.num;
+  game.blue = +blueSets[blueSets.length - 1].groups.num;
+  resultPart2.push(game.red * game.green * game.blue);
+
+  // console.log("Game :", game);
+  // resultPart2.push(game);
 
   if (count <= 0) return i + 1;
 });
 
+// console.log(data, resultPart2);
 const result = data.reduce((a, c) => a + (c ? c : 0), 0);
-const resultPart2 = data.reduce(
-  (a, c) =>
-    a +
-    redSets[redSets.length - 1].groups.num *
-      greenSets[greenSets.length - 1].groups.num *
-      blueSets[blueSets.length - 1].groups.num
-);
-console.log(result, resultPart2);
+const result2 = resultPart2.reduce((a, c) => a + c, 0);
+console.log(result, result2);
