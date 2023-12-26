@@ -38,13 +38,20 @@ const solution = (cards) => {
     // return matches;
     //console.log(i, "->", count, cardN[0].split(/\s+/), cardN[1].split(/\s+/));
 
-    return count > 0 ? 2 ** (count - 1) : 0;
+    const matchObj = {
+      card: i + 1,
+      wins: count,
+      points: count > 0 ? 2 ** (count - 1) : 0,
+    };
+    return matchObj;
     // return matches.length > 0 ? matches.reduce((a, c) => a * c) : 0;
     // return matches.length > 0 ? 2 ** matches.length - 1 : 0;
   });
-  console.log(result);
+  // console.log(result);
 
-  return result.reduce((a, c) => a + c, 0);
+  const part1 = result.reduce((a, c) => a + c.points, 0);
+
+  return part1;
 };
 
 console.log(solution(inputs));
