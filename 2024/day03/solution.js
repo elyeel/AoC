@@ -14,3 +14,8 @@ const solution = (lines) => {
 };
 
 console.log(solution(inputs));
+
+// splitting the dos and don'ts then merge them after removing anything after don'ts
+const splitterMerger = (data) => {
+  const splitDo = data.split("do()");
+};
