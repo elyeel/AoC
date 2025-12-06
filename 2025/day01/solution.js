@@ -76,7 +76,7 @@ const solutionV2 = (data, orgPosition) => {
     if (x.direction === "R") {
       zeroPassed += Math.trunc((orgPosition + x.distanceP2) / 100);
       orgPosition = (orgPosition + x.distanceP2) % 100;
-      if (orgPosition === 0) zeroPassed++;
+      // if (orgPosition === 0) zeroPassed++;
     }
     orgPosition == 0 ? counter++ : null;
     linesProcessed++;
