@@ -62,8 +62,62 @@ const part1 = inputs
   });
 console.log(
   "Part 1 results:",
-  part1,
   results.reduce((a, b) => +a + +b, 0)
 );
+
+const isInvalidIDv3 = (id) => {
+  const result = { invalid: false, details: [] };
+  const [min, max] = id;
+
+  for (let i = +min; i <= +max; i++) {
+    const strI = i.toString();
+    const len = strI.length;
+
+    // Check for all possible substring lengths
+    if (isInvalid(strI)) {
+      result.invalid = true;
+      result.details.push(strI);
+    }
+  }
+  return result;
+};
+
+// isInvalidID concept -> works for part 2
+const isInvalid = (id) => {
+  let result = false;
+  for (let len = 1; len <= id.length / 2; len++) {
+    const pattern = id.slice(0, len);
+    const repetitions = id.length / len;
+    if (pattern.repeat(repetitions) === id) {
+      result = true;
+      break;
+    }
+  }
+
+  return result;
+};
+
+// Testing isInvalid function
+// console.log(isInvalid("1212")); // true
+// console.log(isInvalid("123123")); // true
+// console.log(isInvalid("1234")); // false
+// console.log(isInvalid("1188511885")); //true
+// console.log(isInvalid("12341234")); // true
+// console.log(isInvalid("123123123")); // true
+// console.log(isInvalid("123456")); // false
+
+//Part 2: Process all ranges and sum invalid IDs
+let resultsPart2 = [];
+const part2 = inputs
+  .map((id) => isInvalidIDv3(id))
+  .map((res) => {
+    if (res.invalid)
+      res.details.forEach((detail) => resultsPart2.push(+detail));
+    return res;
+  });
+
+const part2Sum = resultsPart2.reduce((a, b) => a + b, 0);
+console.log("\nPart 2 results:");
+console.log("Sum of invalid IDs:", part2Sum);
 
 console.log("\nElapsed:", Date.now() - startTime, "ms");
